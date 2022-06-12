@@ -3,24 +3,35 @@ package com.example.demo.mlp;
 import java.io.IOException;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
+
 public class MLP {
-    
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String init() throws IOException{
-        this.run();
-        return "leo";
+    String arqpathtrainning;
+    String arqpathtest;
+
+    @RequestMapping(value = "/trainningpath", method = RequestMethod.POST)
+    public void setPathtrainning(String arqpath) {
+        this.arqpathtrainning = arqpath;
+    }
+
+    @RequestMapping(value = "/testpath", method = RequestMethod.POST)
+    public void setPathtest(String arqpath) {
+        this.arqpathtrainning = arqpath;
+    }
+
+    @RequestMapping(value = "/init", method = RequestMethod.GET)
+    public int[][] init() throws IOException{
+        return this.run();
     }
 
 
 
-    public void run() throws IOException {
+    public int[][] run() throws IOException {
         net n = new net(6, 5, 0.00001, 1, 0.2);
 
         n.readArq("C:\\IA\\base_treinamento.csv");
@@ -33,6 +44,6 @@ public class MLP {
         }
         System.out.println("CAbo\n\n\n");
         System.out.println("teste");
-        n.test("C:\\IA\\base_teste.csv");
+        return n.test("C:\\IA\\base_teste.csv");
     }
 }

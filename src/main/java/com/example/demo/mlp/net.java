@@ -201,7 +201,7 @@ public class net {
     }
 
     
-    public void test(String arqName) throws IOException {
+    public int[][] test(String arqName) throws IOException {
         List<Double> vals;
         
         
@@ -249,6 +249,7 @@ public class net {
             }
             System.out.println();
         }
+        return this.confusionMatrix;
     }
 
 }
