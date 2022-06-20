@@ -50,8 +50,12 @@ public class net {
         this.desired = desired;
     }
 
-    public boolean getError() {
+    public boolean getErrorStatus() {
         return errorstatus;
+    }
+
+    public Double getError(){
+        return this.error;
     }
 
     public void setError(Double error) {
@@ -170,12 +174,12 @@ public class net {
             pos = this.desiredaux.indexOf(this.desired.get(index));
 
             
-            this.error = 0.5*Math.pow((pos - this.predicted),2);
+            this.error = 0.5*(Math.pow((pos - this.predicted),2));
 
             if(this.error < this.errormin){
+                System.out.printf("Iteration: "+index+" Error: %.5f\n",this.error);
                 index = this.data.size()+1;
                 this.errorstatus = true;
-                System.out.printf("Iteration: "+index+" Error: %.5f\n",this.error);
             }
             else{
                 this.outputNode.calculateError(pos, this.predicted, this.options);
@@ -185,7 +189,6 @@ public class net {
                 this.layers.attweight();
             }
 
-            //System.out.printf("Predicted: %.5f Desired: %s\n",this.predicted,this.desired.get(index));
 
         }
 
@@ -203,8 +206,7 @@ public class net {
     
     public int[][] test(String arqName) throws IOException {
         List<Double> vals;
-        
-        
+               
         this.data = new ArrayList<List<Double>>();
         this.desiredIndex = new int [this.desiredaux.size()];
         this.desired = new ArrayList<String>();
@@ -225,24 +227,21 @@ public class net {
             switch(this.options) {
                 case 1:
                     this.predicted = this.outputNode.linear();
-                    System.out.println(this.desired.get(index)+""+this.predicted);
+                    System.out.println(this.desiredaux.indexOf(this.desired.get(index))+"|"+this.predicted);
                     break;
                 case 2:
                     this.predicted = this.outputNode.logistical();
-                    System.out.println(this.desired.get(index)+""+this.predicted);
+                 //   System.out.println(this.desired.get(index)+""+this.predicted);
                     break;
                 case 3:
                     this.predicted = this.outputNode.tangent();
-                    System.out.println(this.desired.get(index)+""+this.predicted);
+           //         System.out.println(this.desiredaux.indexOf(this.desired.get(index))+"|"+this.predicted);
                     break;
             }
             
-            this.confusionMatrix[this.desiredIndex[this.desiredaux.indexOf(this.desired.get(index))]-1][(int)Math.round(this.predicted)]++;
-            
-
-            // System.out.printf("Iteration: "+index+" Error: %.5f\n",this.error);
-            // System.out.printf("Predicted: %.5f Desired: %s\n",this.predicted,this.desired.get(index));
+            this.confusionMatrix[this.desiredaux.indexOf(this.desired.get(index))][(int)Math.round(this.predicted)]++;
         }
+
         for(int i=0;i<this.confusionMatrix[0].length;i++){
             for(int j=0;j<this.confusionMatrix.length;j++){
                 System.out.print(this.confusionMatrix[i][j]+" ");

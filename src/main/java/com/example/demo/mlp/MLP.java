@@ -32,18 +32,16 @@ public class MLP {
 
 
     public int[][] run() throws IOException {
-        net n = new net(6, 5, 0.00001, 1, 0.2);
+        net n = new net(6, 5, 0.00000001, 1, 0.0000009);
 
         n.readArq("C:\\IA\\base_treinamento.csv");
-        for(int i=0; i<2000; i++){
-            System.out.println("Epoca: " + i);
+        for(int i=0; i<20000; i++){
+            System.out.println("Epoca: " + i+" | "+n.getError());
             n.trainning();
-            if(n.getError()){
-                i = 2001;
+            if(n.getErrorStatus()){
+                i = 2000001;
             }
-        }
-        System.out.println("CAbo\n\n\n");
-        System.out.println("teste");
+        
         return n.test("C:\\IA\\base_teste.csv");
     }
 }

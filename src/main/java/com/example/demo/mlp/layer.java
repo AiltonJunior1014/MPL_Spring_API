@@ -74,19 +74,42 @@ public class layer {
     public void setWeight(int entries) {
         Double aux;
         Random rand = new Random();
-        for(node i : this.nodes) {
-            for(int j=0; j<entries; j++) {
-                aux = rand.nextDouble();
-                i.setWeight(aux);
-            }
+
+        switch (this.option) {
+            case 1:
+                for(node i : this.nodes) {
+                    for(int j=0; j<entries; j++) {
+                        aux = rand.nextDouble();
+                        i.setWeight(aux);
+                    }
+                }
+                break;
+            case 2:
+                for(node i : this.nodes) {
+                    for(int j=0; j<entries; j++) {
+                        aux = rand.nextDouble()-0.5;
+                        i.setWeight(aux);
+                    }
+                }
+                break;
+            case 3:
+                for(node i : this.nodes) {
+                    for(int j=0; j<entries; j++) {
+                        aux = rand.nextDouble();
+                        i.setWeight(aux);
+                    }
+                }
+                break;
+           
         }
+
+        
     }
 
     public void calculateError(Double error, List<Double> weight){
         for(int i =0; i < this.nodes.size(); i++) {
             switch(this.option) {
                 case 1:
-
                     this.nodes.get(i).setError((error*weight.get(i))*this.nodes.get(i).linearDer());
                     break;
                 case 2:
